@@ -1,11 +1,16 @@
 import {
-  cart,
-  removeFromCart,
-  updateCartQuantity,
-  updateQuantity,
+  cart, removeFromCart,
+  updateCartQuantity,updateQuantity,
 } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrancy } from "./utils/money.js";
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+
+
+const today= dayjs();
+const deliveryDate = today.add(7, 'days');
+deliveryDate.format('dddd,MMMM D')
+console.log(deliveryDate);
 
 let cartSummaryHTML = "";
 
