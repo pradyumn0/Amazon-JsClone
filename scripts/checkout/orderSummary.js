@@ -9,6 +9,7 @@ import { products, getProduct } from "../../data/products.js";
 import { formatCurrancy } from "../utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOption.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 export function renderOrderSummary() {
   let cartSummaryHTML = "";
@@ -100,8 +101,8 @@ export function renderOrderSummary() {
 
       html += ` 
   <div class="delivery-option js-delivery-option"
-   data-product-id-"${matchingProduct.id}" 
-  data-delivery-option-id-"${deliveryOption.id}">
+   data-product-id="${matchingProduct.id}" 
+  data-delivery-option-id="${deliveryOption.id}">
   <input
     type="radio"
     ${isChecked ? "checked" : ""}
@@ -120,7 +121,7 @@ export function renderOrderSummary() {
 
   document.querySelectorAll(".js-delete-link").forEach((link) => {
     link.addEventListener("click", () => {
-      const productId = link.dataset.productId;
+      const {productId} = link.dataset;
       removeFromCart(productId);
 
       const container = document.querySelector(
@@ -129,6 +130,8 @@ export function renderOrderSummary() {
       container.remove();
 
       updateProductQuantity();
+
+      renderPaymentSummary()
     });
   });
 
@@ -143,6 +146,7 @@ export function renderOrderSummary() {
         ".js-return-to-home-link"
       ).innerText = `${cartQuantity} items`;
     }
+    renderPaymentSummary()
     // return cartQuantity;
   }
 
