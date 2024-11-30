@@ -23,5 +23,5 @@ deliveryOptions.forEach((option) => {
     deliveryOption = option;
   }
 });
-return deliveryOption
+return deliveryOption;
 }

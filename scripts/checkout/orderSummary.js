@@ -8,28 +8,37 @@ import {
 import { products, getProduct } from "../../data/products.js";
 import { formatCurrancy } from "../utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
-import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOption.js";
+// import dayjs from "https://unpkg.com/browse/dayjs@1.11.13/dayjs.min.js";
+import {
+  deliveryOptions,
+  getDeliveryOption,
+} from "../../data/deliveryOption.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
 
+// const dayjs = require('dayjs');
 export function renderOrderSummary() {
   let cartSummaryHTML = "";
 
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
-    const matchingProduct = getProduct(productId);
 
-    // products.forEach((product) => {
-    //   if (product.id === productId) {
-    //     matchingProduct = product;
-    //   }
-    // });
+    const matchingProduct = getProduct(productId);
 
     const deliveryOptionId = cartItem.deliveryOptionId;
 
-    const deliveryOption = getDeliveryOption(deliveryOptionId)
+    const deliveryOption = getDeliveryOption(deliveryOptionId);
+
+    // let deliveryOption;
+    // deliveryOptions.forEach((option) => {
+    //   if (option.id === deliveryOptionId) {
+    //     deliveryOption = option;
+    //   }
+    // });
 
     const today = dayjs();
+
     const deliveryDate = today.add(deliveryOption.deliveryDate, "days");
+
     const dateString = deliveryDate.format("dddd, MMMM D");
 
     cartSummaryHTML += `
@@ -121,7 +130,7 @@ export function renderOrderSummary() {
 
   document.querySelectorAll(".js-delete-link").forEach((link) => {
     link.addEventListener("click", () => {
-      const {productId} = link.dataset;
+      const { productId } = link.dataset;
       removeFromCart(productId);
 
       const container = document.querySelector(
@@ -131,7 +140,7 @@ export function renderOrderSummary() {
 
       updateProductQuantity();
 
-      renderPaymentSummary()
+      renderPaymentSummary();
     });
   });
 
@@ -146,7 +155,7 @@ export function renderOrderSummary() {
         ".js-return-to-home-link"
       ).innerText = `${cartQuantity} items`;
     }
-    renderPaymentSummary()
+    renderPaymentSummary();
     // return cartQuantity;
   }
 
@@ -202,6 +211,7 @@ export function renderOrderSummary() {
       const { productId, deliveryOptionId } = element.dataset;
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
+      renderPaymentSummary();
     });
   });
 }
